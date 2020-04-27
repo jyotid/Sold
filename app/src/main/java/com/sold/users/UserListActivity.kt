@@ -5,11 +5,11 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.ui.core.Layout
-import androidx.ui.core.Text
 import androidx.ui.core.setContent
-import androidx.ui.layout.ConstrainedBox
+import androidx.ui.foundation.Text
 import androidx.ui.material.MaterialTheme
 import androidx.ui.tooling.preview.Preview
+import com.sold.tickets.UserCard
 import org.intellij.lang.annotations.JdkConstants
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
@@ -27,7 +27,7 @@ class UserListActivity  : AppCompatActivity() {
         setContent {
 
             MaterialTheme {
-                Greeting()
+               UserCard()
                 
             }
         }
