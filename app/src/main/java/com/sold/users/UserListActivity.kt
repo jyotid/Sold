@@ -1,60 +1,53 @@
 package com.sold.users
 
 import android.os.Bundle
-import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
-import androidx.ui.core.Layout
+import androidx.compose.State
 import androidx.ui.core.setContent
+import androidx.ui.foundation.AdapterList
 import androidx.ui.foundation.Text
+import androidx.ui.layout.Column
+import androidx.ui.livedata.observeAsState
+import androidx.ui.material.Button
 import androidx.ui.material.MaterialTheme
-import androidx.ui.tooling.preview.Preview
-import com.sold.tickets.UserCard
-import org.intellij.lang.annotations.JdkConstants
+import com.sold.users.data.model.User
+import com.sold.users.presentation.UserViewModel
+import com.sold.users.views.UserCard
 import org.koin.android.ext.android.getKoin
 import org.koin.core.qualifier.named
 import org.koin.core.scope.Scope
 
-// Figure out why the object survives even after closing the scope
-class UserListActivity  : AppCompatActivity() {
+class UserListActivity : AppCompatActivity() {
 
-    lateinit var userPresenter : UserPresenter
-    private lateinit var session : Scope
+    lateinit var userViewModel: UserViewModel
+    private lateinit var session: Scope
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContent {
+        session = getKoin().getOrCreateScope("user_scope_ID", named("user_scope"))
+        userViewModel = session.get()
 
+        setContent {
             MaterialTheme {
-               UserCard()
-                
+                val userState= userViewModel.getUsers().observeAsState(initial = listOf())
+                Column {
+                    Button(onClick = { userViewModel.updateData() }) {
+                        Text(text = "Click me")
+                    }
+                    UserList(users = userState.value)
+                }
             }
         }
-        session = getKoin().getOrCreateScope("user_scope_ID", named("user_scope"))
-        userPresenter = session.get<UserPresenter>()
-        userPresenter.fetchUser()
-
-        session.close()
-
     }
+}
 
-    override fun onDestroy() {
-        userPresenter.fetchUser()
-        super.onDestroy()
+@Composable
+fun UserList(users : List<User>){
+    AdapterList(data = users) {
+        UserCard(user = it)
     }
 }
 
 
-
-@Composable
-fun Greeting() {
-    Text(text = "Hello")
-}
-
-@Preview
-@Composable
-fun DefaultPreview() {
-    Text("Android")
-
-}

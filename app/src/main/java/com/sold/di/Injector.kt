@@ -1,10 +1,10 @@
 package com.sold.di
 
-import com.sold.users.UserPresenter
-import com.sold.users.UserPresenterImpl
+
 import com.sold.users.data.UserRepo
 import com.sold.users.data.UserRepository
 import com.sold.users.domain.FetchUsersUsecase
+import com.sold.users.presentation.UserViewModel
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
@@ -19,8 +19,9 @@ val userModule = module {
         scoped<FetchUsersUsecase> {
             FetchUsersUsecase(get())
         }
-        scoped<UserPresenter> {
-            UserPresenterImpl(get())
+
+        scoped {
+            UserViewModel(get())
         }
     }
 }

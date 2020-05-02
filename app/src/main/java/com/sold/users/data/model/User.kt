@@ -1,3 +1,4 @@
 package com.sold.users.data.model
 
-data class User(private val name : String)
+
+data class User(val name : String, val designation : String)
