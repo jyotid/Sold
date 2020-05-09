@@ -1,15 +1,20 @@
 package com.sold.users
 
+import android.content.res.Resources
+import android.graphics.Color.*
 import android.os.Bundle
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.Composable
 import androidx.ui.core.Modifier
 import androidx.ui.core.setContent
 import androidx.ui.core.tag
 import androidx.ui.foundation.HorizontalScroller
+import androidx.ui.foundation.Image
 import androidx.ui.foundation.Text
 import androidx.ui.foundation.shape.corner.RoundedCornerShape
 import androidx.ui.graphics.Color
+import androidx.ui.graphics.imageFromResource
 import androidx.ui.layout.*
 import androidx.ui.material.Card
 import androidx.ui.material.MaterialTheme
@@ -33,7 +38,10 @@ class UserListActivity : AppCompatActivity() {
 
         setContent {
             MaterialTheme {
-                    TaskLayout()
+                    Surface(color = Color(parseColor("#030a3a"))) {
+                        TaskLayout()
+                    }
+
 
             }
         }
@@ -59,19 +67,21 @@ class UserListActivity : AppCompatActivity() {
             }
         }
         ConstraintLayout(constraintSet = constraintSet, modifier = Modifier.fillMaxHeight().plus(Modifier.fillMaxWidth())) {
-            ProfileSection(profileInfoTag)
-            val categories = mutableListOf<String>()
-            categories.add("Office")
-            categories.add("Personal")
-            categories.add("Learning")
-            categories.add("Music")
-            categories.add("Office")
-            categories.add("Personal")
-            categories.add("Learning")
-            categories.add("Music")
-            Spacer(modifier = Modifier.height(30.dp).plus(Modifier.fillMaxWidth().plus(Modifier.tag(spacer))))
-            CategorySection(categoryTag, categories)
-            TaskSection(taskTodayTag)
+                ProfileSection(profileInfoTag)
+                val categories = mutableListOf<Pair<String, String>>()
+                categories.add(Pair("Office", "#fe3966"))
+                categories.add(Pair("Personal", "#057dff"))
+                categories.add(Pair("TasK", "#fea623"))
+                categories.add(Pair("Daily", "#9345cd"))
+                categories.add(Pair("Office", "#fe3966"))
+                categories.add(Pair("Personal", "#057dff"))
+                categories.add(Pair("TasK", "#fea623"))
+                categories.add(Pair("Daily", "#9345cd"))
+
+                Spacer(modifier = Modifier.height(60.dp).plus(Modifier.fillMaxWidth().plus(Modifier.tag(spacer))))
+                CategorySection(categoryTag, categories)
+                TaskSection(taskTodayTag)
+
         }
     }
 }
@@ -85,18 +95,19 @@ fun ProfileSection(tag: String) {
         tag(profilePicTag).left constrainTo tag(salutationTag).right
         tag(salutationTag).left constrainTo parent.left
     }
-    ConstraintLayout(constraintSet = constraintSet, modifier = Modifier.tag(tag)) {
-        Text(text = "Hello, Jyoti", modifier = Modifier.tag(salutationTag))
-        Text(text = "Profile photo", modifier = Modifier.tag(profilePicTag))
+    ConstraintLayout(constraintSet = constraintSet, modifier = Modifier.tag(tag).plus(Modifier.fillMaxWidth()).plus(
+        Modifier.fillMaxHeight())) {
+        Text(color = Color.White,text = "Hello, Jyoti", modifier = Modifier.tag(salutationTag))
+        Text(color = Color.White,text = "Profile photo", modifier = Modifier.tag(profilePicTag))
     }
 }
 
 @Composable
-fun CategorySection(tag: String, categories: List<String>) {
+fun CategorySection(tag: String, categories: List<Pair<String, String>>) {
     HorizontalScroller(modifier = Modifier.tag(tag)) {
         Row {
             categories.forEach {
-                CategoryCard(it)
+                CategoryCard(it.first, it.second)
             }
         }
 
@@ -104,27 +115,26 @@ fun CategorySection(tag: String, categories: List<String>) {
 }
 
 @Composable
-fun CategoryCard(title: String) {
-    Card(modifier = Modifier.preferredHeight(80.dp).plus(Modifier.preferredWidth(80.dp))) {
-        Row {
-            Text(text = title)
+fun CategoryCard(title: String, color: String) {
+    Card(modifier = Modifier.preferredHeight(120.dp).plus(Modifier.preferredWidth(100.dp).plus(Modifier.padding(5.dp))),
+            color = Color(parseColor(color)),
+            shape = RoundedCornerShape(12.dp)
+    ) {
+        Column {
+            Text(color =  Color(parseColor("#fefdfe")), text = title)
+            Text(color =  Color(parseColor("#fefdfe")), text = "5 task")
         }
+
     }
 }
 
 @Composable
 fun TaskSection(tag: String) {
-    Card(modifier = Modifier.preferredHeight(300.dp).plus(Modifier.fillMaxWidth()).plus(Modifier.tag(tag = tag)), shape = RoundedCornerShape(topLeft = 5.dp), color = Color.Green) {
+    Card(modifier = Modifier.preferredHeight(400.dp).plus(Modifier.fillMaxWidth()).plus(Modifier.tag(tag = tag)),
+            shape = RoundedCornerShape(topLeft = 16.dp, topRight = 16.dp),
+            color = Color(parseColor("#fefefe")) ) {
         Text(text = "title")
     }
 }
-//@Composable
-//fun UserList(users : List<User>){
-
-//    Box(modifier = Modifier.tag(taskTodayTag)){
-//        val userState= userViewModel.getUsers().observeAsState(initial = listOf())
-//        UserList(users = userState.value)
-//    }
-//}
 
 
