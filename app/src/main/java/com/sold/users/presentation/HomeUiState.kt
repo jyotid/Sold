@@ -21,8 +21,9 @@ data class Category(
 )
 
 data class Task(
-    @DrawableRes val icon : Int,
+    @DrawableRes val icon : Int = R.drawable.ic_done,
     val title : String,
     val completedCount : String,
-    val totalCount : String
+    val totalCount : String,
+    val tint : String
 )

@@ -20,7 +20,7 @@ class UserViewModel constructor(private val fetchUsersUsecase: FetchUsersUsecase
 
     fun updateData() {
         users.value = HomeUiState(
-            salutation = getSalutation("Jyoti"),
+            salutation = getSalutation("Jyoti Dubey"),
             image = R.drawable.ic_user,
             categories = getCategories(),
             tasks = getTask(),
@@ -74,18 +74,17 @@ class UserViewModel constructor(private val fetchUsersUsecase: FetchUsersUsecase
     private fun getTask(): List<Task>{
         val tasks = mutableListOf<Task>()
         tasks.add(Task(
-            icon = R.drawable.ic_learning,
             title = "Drawing",
-            completedCount = "2 Completed",
-            totalCount = "4"
+            completedCount = "2 of 2 Completed",
+            totalCount = "4",
+            tint = "#03fc8c"
 
         ))
         tasks.add(Task(
-            icon = R.drawable.ic_learning,
             title = "Work manage",
-            completedCount = "2 Completed",
-            totalCount = "3"
-
+            completedCount = "1 of 2 Completed",
+            totalCount = "3",
+            tint = "#fcad03"
         ))
         return tasks
     }
